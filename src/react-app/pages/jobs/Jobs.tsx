@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/react-app/components/ui/button';
 import { Input } from '@/react-app/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/react-app/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/react-app/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
+
 import { Badge } from '@/react-app/components/ui/badge';
-import { Briefcase, MapPin, DollarSign, Search, Filter, Clock, Mail } from 'lucide-react';
+import { Briefcase, MapPin, DollarSign, Search, Filter, Clock } from 'lucide-react';
+
 import { JobPosting } from '@/shared/types';
 
 const mockJobs: JobPosting[] = [

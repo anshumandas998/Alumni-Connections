@@ -1,7 +1,8 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Home, Users, Calendar, Briefcase, BookOpen, Image, UserPlus, Activity, Settings } from 'lucide-react';
+import { Home, Users, Calendar, Briefcase, UserPlus, Activity, Settings } from 'lucide-react';
+
 import { useAuth } from '@/react-app/contexts/AuthContext';
-import { useEffect } from 'react';
+
 
 export default function AdminLayout() {
   const { user } = useAuth();

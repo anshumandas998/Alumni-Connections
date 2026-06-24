@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/react-app/components/ui/table';
 import { Badge } from '@/react-app/components/ui/badge';
-import { Activity, Clock, User, Target } from 'lucide-react';
+import { Activity, Clock, Target } from 'lucide-react';
+
 import api from '@/react-app/lib/api';
 
 interface AuditLog {

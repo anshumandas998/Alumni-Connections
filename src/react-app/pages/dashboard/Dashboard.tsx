@@ -1,14 +1,19 @@
 import { useAuth } from '@/react-app/contexts/AuthContext';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  Users, Calendar, Briefcase, MessageSquare, Bell, Award, Image,
-  GraduationCap 
+import {
+  Users,
+  Calendar,
+  Briefcase,
+  MessageSquare,
+  Bell,
+  GraduationCap,
 } from 'lucide-react';
 import { Button } from '@/react-app/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/react-app/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
 
 export default function Dashboard() {
+
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 

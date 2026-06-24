@@ -5,7 +5,8 @@ import { Input } from '@/react-app/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/react-app/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/react-app/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
-import { Users, Search, Filter, MapPin, Briefcase, GraduationCap } from 'lucide-react';
+import { Users, Search, Filter, MapPin } from 'lucide-react';
+
 import { AlumniProfile } from '@/shared/types';
 
 const mockAlumni: AlumniProfile[] = [

@@ -7,7 +7,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/react-app/components/ui/dialog';
 import { Badge } from '@/react-app/components/ui/badge';
 import { Switch } from '@/react-app/components/ui/switch';
-import { Users, Plus, Edit3, Trash2, UserPlus } from 'lucide-react';
+import { Users, Edit3, Trash2, UserPlus } from 'lucide-react';
+
 import type { User } from '@/shared/types';
 import api from '@/react-app/lib/api';
 

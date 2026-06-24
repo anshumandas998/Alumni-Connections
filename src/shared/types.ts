@@ -1,6 +1,23 @@
 import z from "zod";
 
+// Alumni Directory (types used across the app)
+// NOTE: This is declared before FrontendUserSchema so it can be referenced there.
+export const AlumniProfileSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  location: z.string(),
+  company: z.string().optional(),
+  jobTitle: z.string().optional(),
+  graduationYear: z.number().optional(),
+  skills: z.array(z.string()),
+  bio: z.string().optional()
+});
+
+export type AlumniProfile = z.infer<typeof AlumniProfileSchema>;
+
 // User (from auth)
+
 export const BackendUserSchema = z.object({
   _id: z.string(),
   username: z.string(),
@@ -20,8 +37,11 @@ export type UserRole = 'admin' | 'superadmin';
 export const FrontendUserSchema = BackendUserSchema.extend({
   id: z.string(),
   username: z.string(),
+  profile: AlumniProfileSchema.optional(),
 }).omit({ _id: true });
+
 export type FrontendUser = z.infer<typeof FrontendUserSchema>;
+
 
 export interface JwtPayload {
   id: string;
@@ -33,20 +53,7 @@ export interface JwtPayload {
 
 export type User = FrontendUser;
 
-// Alumni Directory
-export const AlumniProfileSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string().email(),
-  location: z.string(),
-  company: z.string().optional(),
-  jobTitle: z.string().optional(),
-  graduationYear: z.number().optional(),
-  skills: z.array(z.string()),
-  bio: z.string().optional()
-});
 
-export type AlumniProfile = z.infer<typeof AlumniProfileSchema>;
 
 // Events
 export const EventSchema = z.object({

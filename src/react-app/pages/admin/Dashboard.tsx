@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
 import { Badge } from '@/react-app/components/ui/badge';
-import { Users, Calendar, Briefcase, BarChart3, Activity } from 'lucide-react';
+import { Users, Calendar, Briefcase, Activity } from 'lucide-react';
+
 import api from '@/react-app/lib/api';
 import { useAuth } from '@/react-app/contexts/AuthContext';
 

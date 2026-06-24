@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+
 import { useAuth } from '@/react-app/contexts/AuthContext';
 import { Button } from '@/react-app/components/ui/button';
 import { Input } from '@/react-app/components/ui/input';
 import { Textarea } from '@/react-app/components/ui/textarea';
 import { Label } from '@/react-app/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/react-app/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/react-app/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
+
 import { Badge } from '@/react-app/components/ui/badge';
 import { Separator } from '@/react-app/components/ui/separator';
-import { User, Mail, MapPin, Briefcase, Calendar, Phone, Link2, Image as ImageIcon, Edit3, Award, Users } from 'lucide-react';
-import { User as UserType, AlumniProfile } from '@/shared/types';
+import { User, Mail, MapPin, Briefcase, Calendar, Link2, Image as ImageIcon, Edit3, Award, Users } from 'lucide-react';
 
-const mockAlumniProfiles: Record<string, AlumniProfile> = {
+
+const mockAlumniProfiles: Record<string, any> = {
+
   '1': {
     id: '1',
     name: 'Sarah Johnson',
@@ -40,7 +43,7 @@ const mockAlumniProfiles: Record<string, AlumniProfile> = {
 export default function Profile() {
   const { user } = useAuth();
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+
   const [isOwnProfile] = useState(!id || id === user?.id);
   const [isEditing, setIsEditing] = useState(isOwnProfile);
 const [profile, setProfile] = useState<any>({
@@ -277,11 +280,12 @@ const [profile, setProfile] = useState<any>({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {profile.skills.map((skill, i) => (
+                      <div className="flex flex-wrap gap-2">
+                    {profile.skills.map((skill: string, i: number) => (
                       <Badge key={i} variant="secondary">{skill}</Badge>
                     ))}
                   </div>
+
                 </CardContent>
               </Card>
             )}

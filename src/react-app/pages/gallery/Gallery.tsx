@@ -3,8 +3,9 @@ import { Button } from '@/react-app/components/ui/button';
 import { Input } from '@/react-app/components/ui/input';
 import { Badge } from '@/react-app/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/react-app/components/ui/card';
-import { Search, Filter, Image as ImageIcon, Calendar, Tag, Grid, List } from 'lucide-react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Search, Image as ImageIcon, Calendar, Grid } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
 
 interface GalleryImage {
   id: string;
@@ -81,10 +82,12 @@ const mockGallery: GalleryImage[] = [
 ];
 
 export default function Gallery() {
-  const [images, setImages] = useState(mockGallery);
+  const [images] = useState(mockGallery);
+
   const [search, setSearch] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('grid');
+  const [viewMode] = useState<'grid' | 'masonry'>('grid');
+
   const [layout, setLayout] = useState<'grid' | 'list'>('grid');
   const navigate = useNavigate();
 

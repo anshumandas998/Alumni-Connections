@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import api from '../lib/api';
-import type { FrontendUser, JwtPayload } from '@/shared/types';
+import type { FrontendUser } from '@/shared/types';
+
 
 interface AuthContextType {
   user: FrontendUser | null;
@@ -18,16 +19,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 
-function getJwtPayload(): JwtPayload | null {
-  const token = localStorage.getItem('jwt');
-  if (!token) return null;
-  try {
-    return JSON.parse(atob(token.split('.')[1])) as JwtPayload;
-  } catch {
-    localStorage.removeItem('jwt');
-    return null;
-  }
-}
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<FrontendUser | null>(null);

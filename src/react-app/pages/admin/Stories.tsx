@@ -4,7 +4,8 @@ import { Input } from '@/react-app/components/ui/input';
 import { Textarea } from '@/react-app/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/react-app/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/react-app/components/ui/table';
-import { PlusCircle, Trash2, Edit } from 'lucide-react';
+import { PlusCircle, Trash2 } from 'lucide-react';
+
 
 interface Story {
   id: string;

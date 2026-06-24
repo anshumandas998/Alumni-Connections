@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import { useAuth } from '@/react-app/contexts/AuthContext';
 import { Menu, X, GraduationCap } from 'lucide-react';
 import { Button } from '@/react-app/components/ui/button';
