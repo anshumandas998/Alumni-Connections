@@ -1,254 +1,283 @@
-import { useState } from 'react';
-import { Button } from '@/react-app/components/ui/button';
-import { Input } from '@/react-app/components/ui/input';
-import { Badge } from '@/react-app/components/ui/badge';
-import { Card, CardContent, CardHeader } from '@/react-app/components/ui/card';
-import { Search, Image as ImageIcon, Calendar, Grid } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
+import { Heart, Image as ImageIcon, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-
-interface GalleryImage {
+interface GalleryItem {
   id: string;
-  src: string;
-  alt: string;
+  url: string;
   title: string;
-  date: string;
-  event?: string;
-  tags: string[];
-  photographer: string;
+  category?: string;
+  uploadedAt?: string;
+  likes?: number;
 }
 
-const mockGallery: GalleryImage[] = [
-  {
-    id: '1',
-    src: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=400&fit=crop',
-    alt: 'Graduation ceremony',
-    title: 'Class of 2023 Commencement',
-    date: 'May 15, 2023',
-    event: 'Annual Graduation',
-    tags: ['graduation', 'ceremony', 'campus'],
-    photographer: 'Campus Photography'
+const defaultImages: GalleryItem[] = [
+  { 
+    id: 'd1', 
+    url: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1000&h=700&fit=crop', 
+    title: 'Grand Alumni Reunion Gala 2026',
+    category: 'Reunions',
+    uploadedAt: '2026-08-15',
+    likes: 124
   },
-  {
-    id: '2',
-    src: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop',
-    alt: 'Networking event',
-    title: 'Alumni Networking Night',
-    date: 'March 22, 2023',
-    event: 'Tech Networking',
-    tags: ['networking', 'professional', 'tech'],
-    photographer: 'Event Team'
+  { 
+    id: 'd2', 
+    url: 'https://images.unsplash.com/photo-1517457373958-b7bdd458720e?w=1000&h=700&fit=crop', 
+    title: 'Global Tech & Innovation Symposium',
+    category: 'Networking',
+    uploadedAt: '2026-07-22',
+    likes: 89
   },
-  {
-    id: '3',
-    src: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop',
-    alt: 'Sports reunion',
-    title: 'Alumni Sports Day 2023',
-    date: 'June 10, 2023',
-    event: 'Sports Reunion',
-    tags: ['sports', 'reunion', 'athletics'],
-    photographer: 'Sports Media'
+  { 
+    id: 'd3', 
+    url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&h=700&fit=crop', 
+    title: 'University Courtyard & Clocktower Sunrise',
+    category: 'Campus',
+    uploadedAt: '2026-06-10',
+    likes: 210
   },
-  {
-    id: '4',
-    src: 'https://images.unsplash.com/photo-1519452634766-879ec7665b4a?w=600&h=400&fit=crop',
-    alt: 'Holiday party',
-    title: 'Holiday Alumni Party',
-    date: 'December 8, 2022',
-    event: 'Holiday Celebration',
-    tags: ['holiday', 'party', 'social'],
-    photographer: 'Holiday Crew'
+  { 
+    id: 'd4', 
+    url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1000&h=700&fit=crop', 
+    title: 'Commencement Ceremony & Hat Toss',
+    category: 'Ceremonies',
+    uploadedAt: '2026-05-30',
+    likes: 345
   },
-  {
-    id: '5',
-    src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop',
-    alt: 'Career fair',
-    title: 'Spring Career Fair',
-    date: 'April 5, 2023',
-    event: 'Career Fair',
-    tags: ['career', 'fair', 'professional'],
-    photographer: 'Career Services'
+  { 
+    id: 'd5', 
+    url: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&h=700&fit=crop', 
+    title: 'Alumni Founders Pitch & Demo Day',
+    category: 'Networking',
+    uploadedAt: '2026-04-18',
+    likes: 76
   },
-  {
-    id: '6',
-    src: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b7?w=600&h=400&fit=crop',
-    alt: 'Welcome week',
-    title: 'New Alumni Welcome',
-    date: 'September 15, 2023',
-    event: 'Welcome Week',
-    tags: ['welcome', 'new-alumni', 'orientation'],
-    photographer: 'Welcome Team'
+  { 
+    id: 'd6', 
+    url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1000&h=700&fit=crop', 
+    title: 'Annual Alumni Chapter Dinner & Awards',
+    category: 'Reunions',
+    uploadedAt: '2026-03-12',
+    likes: 154
+  },
+  { 
+    id: 'd7', 
+    url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1000&h=700&fit=crop', 
+    title: 'Alumni Inter-College Basketball Championship',
+    category: 'Sports',
+    uploadedAt: '2026-02-28',
+    likes: 98
+  },
+  { 
+    id: 'd8', 
+    url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1000&h=700&fit=crop', 
+    title: 'Spring Campus Walk & Cherry Blossoms',
+    category: 'Campus',
+    uploadedAt: '2026-04-05',
+    likes: 182
   }
 ];
 
 export default function Gallery() {
-  const [images] = useState(mockGallery);
-
-  const [search, setSearch] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [viewMode] = useState<'grid' | 'masonry'>('grid');
-
-  const [layout, setLayout] = useState<'grid' | 'list'>('grid');
-  const navigate = useNavigate();
-
-  const allTags = Array.from(new Set(mockGallery.flatMap(img => img.tags)));
-
-  const filteredImages = images.filter(img => {
-    const matchesSearch = 
-      img.title.toLowerCase().includes(search.toLowerCase()) ||
-      img.event?.toLowerCase().includes(search.toLowerCase()) ||
-      img.photographer.toLowerCase().includes(search.toLowerCase());
-
-    const matchesTags = selectedTags.length === 0 || 
-      selectedTags.every(tag => img.tags.includes(tag));
-
-    return matchesSearch && matchesTags;
+  const [images, setImages] = useState<GalleryItem[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [likedMap, setLikedMap] = useState<Record<string, boolean>>(() => {
+    try {
+      const saved = localStorage.getItem('gallery_likes');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
   });
 
-  const handleImageClick = (imageId: string) => {
-    navigate(`/gallery/${imageId}`);
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('admin_gallery');
+      if (saved) {
+        const customImages = JSON.parse(saved);
+        if (Array.isArray(customImages) && customImages.length > 0) {
+          setImages([...customImages, ...defaultImages]);
+          return;
+        }
+      }
+    } catch (e) {
+      console.error('Error loading gallery images', e);
+    }
+    setImages(defaultImages);
+  }, []);
+
+  const categories = ['All', 'Reunions', 'Campus', 'Networking', 'Ceremonies', 'Sports'];
+
+  const filteredImages = useMemo(() => {
+    if (selectedCategory === 'All') return images;
+    return images.filter(img => img.category === selectedCategory);
+  }, [images, selectedCategory]);
+
+  const toggleLike = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    const isLiked = !!likedMap[id];
+    const newLikedMap = { ...likedMap, [id]: !isLiked };
+    setLikedMap(newLikedMap);
+    localStorage.setItem('gallery_likes', JSON.stringify(newLikedMap));
+
+    setImages(prev => prev.map(img => {
+      if (img.id === id) {
+        return { ...img, likes: (img.likes || 0) + (isLiked ? -1 : 1) };
+      }
+      return img;
+    }));
+  };
+
+  const nextImage = () => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((lightboxIndex + 1) % filteredImages.length);
+  };
+
+  const prevImage = () => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((lightboxIndex - 1 + filteredImages.length) % filteredImages.length);
   };
 
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Card className="mb-8">
-          <CardHeader>
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-              <div>
-                <h1 className="text-3xl font-bold flex items-center gap-3 mb-2">
-                  <ImageIcon className="w-8 h-8" />
-                  Alumni Gallery
-                </h1>
-                <p className="text-muted-foreground">Memories from events, reunions, and milestones</p>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={() => setLayout('grid')}>
-                  <Grid className="w-4 h-4 mr-1" />
-                  Grid
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => setLayout('list')}>
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                  </svg>
-                  List
-                </Button>
-              </div>
+    <div className="min-h-screen bg-slate-50">
+      {/* Page Header */}
+      <div className="bg-navy py-20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 border border-gold/20 rounded-full text-gold text-xs font-bold uppercase tracking-widest mb-6">
+              <ImageIcon className="w-4 h-4" />
+              Moments & Memories
             </div>
-          </CardHeader>
-        </Card>
-
-        {/* Filters */}
-        <Card className="mb-8">
-          <CardHeader className="pb-4">
-            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-              <div className="flex items-center gap-2 flex-1 max-w-md">
-                <Search className="w-4 h-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search photos, events..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="max-w-md"
-                />
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {allTags.slice(0, 8).map(tag => (
-                  <Badge
-                    key={tag}
-                    variant={selectedTags.includes(tag) ? 'default' : 'secondary'}
-                    className="cursor-pointer hover:scale-105 transition-transform"
-                    onClick={() => {
-                      setSelectedTags(prev => 
-                        prev.includes(tag) 
-                          ? prev.filter(t => t !== tag)
-                          : [...prev, tag]
-                      );
-                    }}
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-sm text-muted-foreground mb-4">
-              {selectedTags.length > 0 && `Filtered by: ${selectedTags.join(', ')}`} ({filteredImages.length} photos)
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
+              Photo <span className="text-gold">Gallery</span>
+            </h1>
+            <p className="text-white/70 text-lg md:text-xl leading-relaxed">
+              Relive unforgettable memories from campus convocations, chapter reunions, and global alumni celebrations.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+      </div>
 
-        {/* Gallery */}
-        {layout === 'grid' ? (
-          <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`}>
-            {filteredImages.map((image) => (
-              <div
-                key={image.id}
-                className="group relative overflow-hidden rounded-lg aspect-square cursor-pointer hover:shadow-2xl transition-all duration-300"
-                onClick={() => handleImageClick(image.id)}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 pb-24">
+        {/* Category Filters */}
+        <div className="bg-white p-4 rounded-3xl shadow-xl border border-slate-100 mb-10 flex items-center justify-between overflow-x-auto">
+          <div className="flex gap-2 w-full justify-center flex-wrap">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-6 py-3 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all ${
+                  selectedCategory === cat
+                    ? 'bg-navy text-gold shadow-lg shadow-navy/20'
+                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-navy'
+                }`}
               >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <h3 className="font-semibold text-white text-sm mb-1 truncate">{image.title}</h3>
-                  <p className="text-white/90 text-xs mb-2">{image.date}</p>
-                  {image.event && (
-                    <Badge variant="secondary" className="text-xs">{image.event}</Badge>
-                  )}
-                </div>
-              </div>
+                {cat}
+              </button>
             ))}
           </div>
-        ) : (
-          <div className="space-y-4">
-            {filteredImages.map((image) => (
-              <Card key={image.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleImageClick(image.id)}>
-                <div className="relative h-64 overflow-hidden rounded-t-lg">
-                  <img src={image.src} alt={image.alt} className="w-full h-full object-cover hover:scale-105 transition-transform" />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-semibold text-lg mb-1">{image.title}</h3>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {image.date} • {image.photographer}
-                      </p>
-                    </div>
-                    <div className="flex gap-1">
-                      {image.tags.slice(0, 2).map(tag => (
-                        <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
-                      ))}
+        </div>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredImages.map((image, index) => {
+            const isLiked = !!likedMap[image.id];
+
+            return (
+              <div 
+                key={image.id || index} 
+                onClick={() => setLightboxIndex(index)}
+                className="group relative overflow-hidden rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-navy cursor-pointer aspect-square"
+              >
+                <img 
+                  src={image.url} 
+                  alt={image.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6">
+                  <div className="flex justify-between items-start">
+                    <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider text-white">
+                      {image.category || 'Alumni'}
+                    </span>
+                    <button
+                      onClick={(e) => toggleLike(e, image.id)}
+                      className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-rose-500 transition-colors"
+                    >
+                      <Heart className={`w-4 h-4 ${isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-white font-bold text-base line-clamp-2 drop-shadow-md mb-1">
+                      {image.title}
+                    </h3>
+                    <div className="flex items-center justify-between text-xs text-white/70">
+                      <span>{image.uploadedAt ? new Date(image.uploadedAt).toLocaleDateString() : 'Archive'}</span>
+                      <span>♥ {image.likes || 0}</span>
                     </div>
                   </div>
-                  {image.event && <Badge variant="secondary">{image.event}</Badge>}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </main>
 
-        {filteredImages.length === 0 && (
-          <Card className="mt-12 text-center py-16">
-            <ImageIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No photos found</h3>
-            <p className="text-muted-foreground mb-6">Try adjusting your search or tag filters</p>
-            <div className="flex gap-2 justify-center">
-              <Button variant="outline" onClick={() => setSearch('')}>
-                Clear Search
-              </Button>
-              <Button variant="outline" onClick={() => setSelectedTags([])}>
-                Clear Tags
-              </Button>
+      {/* Fullscreen Lightbox Modal */}
+      {lightboxIndex !== null && filteredImages[lightboxIndex] && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 select-none animate-fadeIn"
+          onClick={() => setLightboxIndex(null)}
+        >
+          {/* Close Button */}
+          <button 
+            onClick={() => setLightboxIndex(null)}
+            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-50 transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Nav Prev */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            className="absolute left-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-50 transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Nav Next */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            className="absolute right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-50 transition-colors"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* Lightbox Content */}
+          <div 
+            className="max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={filteredImages[lightboxIndex].url} 
+              alt={filteredImages[lightboxIndex].title}
+              className="max-h-[70vh] max-w-full rounded-2xl object-contain shadow-2xl"
+            />
+            <div className="w-full text-center mt-4">
+              <h3 className="text-xl font-bold text-white mb-1">
+                {filteredImages[lightboxIndex].title}
+              </h3>
+              <p className="text-sm text-gold">
+                {filteredImages[lightboxIndex].category || 'Alumni Moments'} • {filteredImages[lightboxIndex].uploadedAt ? new Date(filteredImages[lightboxIndex].uploadedAt!).toLocaleDateString() : 'Official Gallery'}
+              </p>
             </div>
-          </Card>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-

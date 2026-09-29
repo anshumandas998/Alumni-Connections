@@ -1,117 +1,138 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/react-app/contexts/AuthContext';
+import { Mail, User, Lock, CheckCircle } from 'lucide-react';
 import { Button } from '@/react-app/components/ui/button';
-import { Input } from '@/react-app/components/ui/input';
-import { Label } from '@/react-app/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/react-app/components/ui/card';
-import { Mail, Lock, User, ArrowLeft } from 'lucide-react';
 
 export default function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-    const success = await register(email, password, name);
-    setLoading(false);
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    setIsLoading(true);
+    const success = await register(formData.email, formData.password, formData.name);
+    setIsLoading(false);
     if (success) {
       navigate('/dashboard');
-    } else {
-      setError('Registration failed');
     }
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <section className="relative min-h-screen flex items-center justify-center">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1564769628038-5fd8f5d0b30e?w=1920&q=80)',
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(222,47%,11%)]/95 via-[hsl(222,47%,11%)]/80 to-[hsl(222,47%,11%)]/60" />
-        <Card className="w-full max-w-md shadow-2xl relative z-10">
-          <CardHeader className="text-center">
-            <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-4">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
-            </Link>
-            <CardTitle className="text-3xl">Join AlumniConnect</CardTitle>
-            <CardDescription>Create your account to connect with fellow alumni</CardDescription>
-          </CardHeader>
-          <CardContent>
-          {error && <div className="bg-destructive/10 text-destructive p-3 rounded-md mb-4">{error}</div>}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                  minLength={6}
-                  required
-                />
-              </div>
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Creating account...' : 'Create Account'}
-            </Button>
-          </form>
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              Already have an account?{' '}
-              <Link to="/login" className="text-primary hover:underline font-medium">
-                Sign in
-              </Link>
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-background">
+      <main className="py-20 px-4 flex items-center justify-center min-h-[calc(100vh-10rem)]">
+        <div className="max-w-md w-full space-y-8 bg-card rounded-3xl p-10 shadow-2xl border">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-foreground">
+              Join AlumniConnect
+            </h2>
+            <p className="mt-2 text-center text-muted-foreground">
+              Create your free account and reconnect with your network.
             </p>
           </div>
-        </CardContent>
-      </Card>
-      </section>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full pl-12 py-3 border border-border rounded-2xl bg-background focus:ring-gold focus:border-gold transition-all"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                Email address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full pl-12 py-3 border border-border rounded-2xl bg-background focus:ring-gold focus:border-gold transition-all"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full pl-12 py-3 border border-border rounded-2xl bg-background focus:ring-gold focus:border-gold transition-all"
+                  placeholder="At least 6 characters"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-2">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <CheckCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full pl-12 py-3 border border-border rounded-2xl bg-background focus:ring-gold focus:border-gold transition-all"
+                  placeholder="Confirm your password"
+                />
+              </div>
+            </div>
+            <Button 
+              type="submit" 
+              className="w-full bg-gold text-navy-dark hover:bg-gold/90 py-3 rounded-2xl font-semibold text-lg h-auto"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Creating Account...' : 'Create Account'}
+            </Button>
+          </form>
+          <div className="text-center">
+            <Link to="/login" className="text-sm font-medium hover:text-gold transition-colors">
+              Already have an account? <span className="font-bold">Sign in</span>
+            </Link>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

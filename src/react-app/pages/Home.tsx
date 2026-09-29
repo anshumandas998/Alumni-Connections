@@ -5,8 +5,6 @@ import {
   Award, Image, ArrowRight, Star, TrendingUp
 } from 'lucide-react';
 import { Button } from '@/react-app/components/ui/button';
-import Navbar from '@/react-app/components/Navbar';
-import Footer from '@/react-app/components/Footer';
 
 const features = [
   {
@@ -29,9 +27,9 @@ const features = [
   },
   {
     icon: MessageSquare,
-    title: 'Messaging',
-    description: 'Connect directly with alumni for mentorship and collaboration.',
-    link: '/messages'
+    title: 'Mentorship & Connections',
+    description: 'Connect directly with distinguished alumni for career guidance and collaborative ventures.',
+    link: '/directory'
   },
   {
     icon: Award,
@@ -65,14 +63,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center bg-[hsl(222,47%,11%)]"
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1564769628038-5fd8f5d0b30e?w=1920&q=80)',
+            backgroundImage: 'linear-gradient(135deg, hsl(222,47%,11%) 0%, hsl(45,93%,47%,0.1) 50%, hsl(222,47%,8%) 100%)',
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[hsl(222,47%,11%)]/95 via-[hsl(222,47%,11%)]/80 to-[hsl(222,47%,11%)]/60" />
@@ -122,14 +119,6 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-          </div>
-        </div>
-        
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-white/50 text-xs uppercase tracking-widest">Scroll</span>
-          <div className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2">
-            <div className="w-1.5 h-3 bg-gold rounded-full animate-bounce" />
           </div>
         </div>
       </section>
@@ -201,47 +190,68 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-navy relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gold/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+      <section className="py-24 relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 bg-navy" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gold/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold/10 rounded-full blur-[120px] -translate-x-1/2 translate-y-1/2" />
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 border border-gold/20 rounded-full text-gold text-sm font-bold uppercase tracking-widest mb-8 animate-pulse">
+              Join the Network
+            </div>
             <h2 
-              className="text-4xl md:text-5xl font-bold text-white mb-6"
+              className="text-5xl md:text-7xl font-bold text-white mb-8 leading-[1.1]"
               style={{ fontFamily: 'Playfair Display, serif' }}
             >
               Ready to Reconnect with Your
-              <span className="text-gold"> Alumni Community?</span>
+              <span className="text-gold block mt-2"> Alumni Community?</span>
             </h2>
-            <p className="text-white/70 text-lg mb-10">
+            <p className="text-white/90 text-xl md:text-2xl mb-12 leading-relaxed font-medium">
               Join thousands of alumni who are already networking, sharing opportunities, 
               and building lasting connections.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link to="/register">
                 <Button 
                   size="lg" 
-                  className="bg-gold text-navy-dark hover:bg-gold/90 font-semibold px-10 py-6 text-lg"
+                  className="bg-gold text-navy hover:bg-white hover:text-navy font-black px-12 py-8 text-xl rounded-2xl shadow-[0_20px_50px_rgba(212,175,55,0.3)] hover:shadow-gold/40 transition-all duration-500 transform hover:-translate-y-1 active:scale-95"
                 >
-                  Get Started Free
+                  JOIN NOW
                 </Button>
               </Link>
-              <Link to="/support">
+              <Link to="/directory">
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-white/30 text-white hover:bg-white/10 px-10 py-6 text-lg"
+                  className="border-white/40 text-white hover:bg-white hover:text-navy px-12 py-8 text-xl rounded-2xl transition-all duration-500 backdrop-blur-sm"
                 >
-                  Contact Support
+                  EXPLORE DIRECTORY
                 </Button>
               </Link>
+            </div>
+            
+            {/* Trust Badges/Stats */}
+            <div className="mt-16 pt-12 border-t border-white/10 flex flex-wrap justify-center gap-12 text-white/60">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-white mb-1">5000+</p>
+                <p className="text-xs uppercase tracking-widest font-bold">Active Members</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-white mb-1">200+</p>
+                <p className="text-xs uppercase tracking-widest font-bold">Companies</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-white mb-1">150+</p>
+                <p className="text-xs uppercase tracking-widest font-bold">Global Events</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }

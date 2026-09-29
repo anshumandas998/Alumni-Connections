@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 
-type Env = Record<string, unknown>;
+type Env = {
+  DB: any;
+  R2_BUCKET: any;
+  EMAILS: any;
+};
 
 const app = new Hono<{ Bindings: Env }>();
 
