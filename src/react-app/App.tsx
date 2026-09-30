@@ -23,6 +23,7 @@ import AdminGallery from "@/react-app/pages/admin/AdminGallery";
 import AdminManagement from "@/react-app/pages/admin/AdminManagement";
 import AdminActivity from "@/react-app/pages/admin/Activity";
 import AdminLayout from "@/react-app/pages/admin/AdminLayout";
+import About from "@/react-app/pages/About";
 
 function Layout() {
   return (
@@ -107,6 +108,11 @@ export default function App() {
               <Route path="jobs" element={<Jobs />} />
               <Route path="stories" element={<Stories />} />
               <Route path="gallery" element={<Gallery />} />
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<About />} />
+              <Route path="faq" element={<About />} />
+              <Route path="privacy" element={<About />} />
+              <Route path="terms" element={<About />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="dashboard" element={
@@ -124,6 +130,7 @@ export default function App() {
                   <Profile />
                 </ProtectedRoute>
               } />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={

@@ -51,11 +51,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-navy rounded-lg flex items-center justify-center group-hover:bg-gold transition-colors duration-300 shadow-lg">
-              <GraduationCap className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-gold to-amber-500 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300 shadow-md shadow-gold/20">
+              <GraduationCap className="w-6 h-6 text-navy-dark" />
             </div>
             <span className={`text-xl font-bold tracking-tight transition-colors ${logoColor}`}>
-              AlumniConnect
+              Alumni<span className="text-gold">Connect</span>
             </span>
           </Link>
 
@@ -138,13 +138,13 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="absolute top-20 left-0 right-0 bg-white border-b shadow-2xl md:hidden animate-in slide-in-from-top duration-300">
-          <div className="px-4 py-8 space-y-4">
+        <div className="absolute top-20 left-0 right-0 bg-navy-dark/95 backdrop-blur-xl border-b border-white/10 shadow-2xl md:hidden animate-in slide-in-from-top duration-300">
+          <div className="px-6 py-8 space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
-                className="block text-lg font-bold text-navy hover:text-gold py-2 border-b border-slate-50"
+                className="block text-lg font-bold text-white/90 hover:text-gold py-2.5 border-b border-white/5 transition-colors"
               >
                 {link.name}
               </Link>
@@ -161,13 +161,13 @@ export default function Navbar() {
                     </Link>
                   )}
                   <Link to="/dashboard" className="w-full">
-                    <Button className="w-full justify-start gap-2 bg-slate-50 text-navy hover:bg-slate-100">
+                    <Button className="w-full justify-start gap-2 bg-white/10 text-white hover:bg-white/20">
                       <LayoutDashboard className="w-5 h-5" />
                       Dashboard
                     </Button>
                   </Link>
                   <Link to="/profile" className="w-full">
-                    <Button className="w-full justify-start gap-2 bg-slate-50 text-navy hover:bg-slate-100">
+                    <Button className="w-full justify-start gap-2 bg-white/10 text-white hover:bg-white/20">
                       <UserIcon className="w-5 h-5" />
                       My Profile
                     </Button>
@@ -184,18 +184,18 @@ export default function Navbar() {
               ) : (
                 <>
                   <Link to="/login" className="w-full">
-                    <Button variant="outline" className="w-full font-bold border-navy text-navy">
+                    <Button variant="outline" className="w-full font-bold border-white/20 text-white hover:bg-white/10 bg-transparent">
                       Sign In
                     </Button>
                   </Link>
                   <Link to="/admin/login" className="w-full">
-                    <Button variant="outline" className="w-full font-bold border-slate-300 text-slate-700 flex items-center justify-center gap-2">
+                    <Button variant="outline" className="w-full font-bold border-gold/40 text-gold hover:bg-gold/10 bg-transparent flex items-center justify-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-gold" />
                       Admin Login
                     </Button>
                   </Link>
                   <Link to="/register" className="w-full">
-                    <Button className="w-full bg-gold text-navy font-black shadow-lg">
+                    <Button className="w-full bg-gold text-navy font-black shadow-lg hover:bg-gold/90">
                       JOIN NOW
                     </Button>
                   </Link>
